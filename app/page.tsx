@@ -11,6 +11,7 @@ import Box from "@mui/material/Box";
 import { alpha } from "@mui/material/styles";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import GridViewIcon from "@mui/icons-material/GridView";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import type { SvgIconComponent } from "@mui/icons-material";
 import { siteConfig } from "@/lib/site";
 import FaqSection from "@/components/FaqSection";
@@ -98,6 +99,8 @@ export default function Home() {
                   variant="outlined"
                   sx={{
                     height: "100%",
+                    borderColor: (theme) => alpha(theme.palette.primary.main, 0.25),
+                    boxShadow: "0 1px 3px rgba(30,27,46,0.06)",
                     "&:hover": {
                       boxShadow: "0 8px 24px rgba(30,27,46,0.08)",
                       transform: "translateY(-2px)",
@@ -125,9 +128,27 @@ export default function Home() {
                       <Typography variant="h6" gutterBottom>
                         {tool.title}
                       </Typography>
-                      <Typography variant="body2" color="text.secondary">
+                      <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
                         {tool.description}
                       </Typography>
+                      <Box
+                        sx={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: 0.5,
+                          color: "primary.contrastText",
+                          bgcolor: "primary.main",
+                          fontWeight: 600,
+                          fontSize: "0.875rem",
+                          borderRadius: 999,
+                          px: 2,
+                          py: 0.75,
+                          boxShadow: "0 1px 2px rgba(30,27,46,0.15)",
+                        }}
+                      >
+                        Open tool
+                        <ArrowForwardIcon sx={{ fontSize: 18 }} />
+                      </Box>
                     </CardContent>
                   </CardActionArea>
                 </Card>

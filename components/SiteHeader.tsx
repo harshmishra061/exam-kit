@@ -37,16 +37,19 @@ export default function SiteHeader() {
                 key={link.href}
                 component={Link}
                 href={link.href}
-                color="inherit"
+                variant={isActive ? "contained" : "outlined"}
+                disableElevation
                 sx={{
-                  color: isActive ? "primary.main" : "inherit",
+                  borderRadius: 999,
+                  color: isActive ? "primary.contrastText" : "primary.main",
                   bgcolor: isActive
-                    ? (theme) => alpha(theme.palette.primary.main, 0.1)
-                    : "transparent",
+                    ? "primary.main"
+                    : (theme) => alpha(theme.palette.primary.main, 0.06),
+                  borderColor: (theme) => alpha(theme.palette.primary.main, 0.4),
                   "&:hover": {
                     bgcolor: isActive
-                      ? (theme) => alpha(theme.palette.primary.main, 0.16)
-                      : undefined,
+                      ? "primary.dark"
+                      : (theme) => alpha(theme.palette.primary.main, 0.14),
                   },
                 }}
               >
