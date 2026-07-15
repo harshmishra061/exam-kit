@@ -13,6 +13,7 @@ import { alpha } from "@mui/material/styles";
 import DownloadIcon from "@mui/icons-material/Download";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import UploadDropzone from "@/components/UploadDropzone";
+import FaqSection from "@/components/FaqSection";
 import {
   downloadBlob,
   loadImageDataUrl,
@@ -21,6 +22,34 @@ import {
 } from "@/lib/canvas";
 
 const PREVIEW_BOX_SIZE = 300;
+
+const FAQ_ITEMS = [
+  {
+    question: "How does this actually clean up my signature?",
+    answer:
+      "Upload a photo of your signature on paper, then use the intensity slider — it detects the paper's brightness behind the ink (even with shadows or uneven lighting from a phone photo) and pushes it to pure white, while keeping the signature dark and clean.",
+  },
+  {
+    question: "Will it work if my photo has shadows or was taken at an angle?",
+    answer:
+      "Yes — it analyzes brightness region by region rather than using one fixed threshold, so it handles uneven lighting across the page (like a shadow from your phone or a corner of paper catching more light) better than a simple filter would.",
+  },
+  {
+    question: "Does it matter what color ink my signature is?",
+    answer:
+      "No — the image is converted to grayscale first, so blue, black, or any other ink color ends up as clean dark ink on white, regardless of the original color.",
+  },
+  {
+    question: "Is this only for exam signatures, or any form?",
+    answer:
+      "Any form that asks for a signature photo — exam applications, job applications, visa forms, bank KYC, college admissions — not just government exams. Anywhere a portal wants a clean, white-background signature image, this works.",
+  },
+  {
+    question: "Does it resize my signature to a specific pixel size or file size?",
+    answer:
+      "No — this tool focuses purely on cleaning up the background and ink at your photo's original resolution. If your form needs an exact pixel size or file-size limit, resize the downloaded image separately to match what it asks for.",
+  },
+];
 
 export default function SignatureMakerPage() {
   const [sourceImage, setSourceImage] = useState<HTMLImageElement | null>(null);
@@ -68,8 +97,13 @@ export default function SignatureMakerPage() {
   return (
     <Box component="main" sx={{ flex: 1, bgcolor: "background.default", py: 6 }}>
       <Container maxWidth="sm">
-        <Typography variant="h4" sx={{ mb: 3 }}>
+        <Typography variant="h4" sx={{ mb: 1 }}>
           Signature Maker
+        </Typography>
+        <Typography color="text.secondary" sx={{ mb: 3 }}>
+          Turn a photo of your signature into a clean, white-background image
+          ready for SSC, UPSC, banking, and any other form that needs a
+          signature upload.
         </Typography>
 
         {!sourceImage && (
@@ -135,6 +169,8 @@ export default function SignatureMakerPage() {
             </Button>
           </Paper>
         )}
+
+        <FaqSection items={FAQ_ITEMS} />
       </Container>
     </Box>
   );

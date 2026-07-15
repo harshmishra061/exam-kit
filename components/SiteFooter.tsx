@@ -6,6 +6,8 @@ import Link from "@mui/material/Link";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import FeedbackIcon from "@mui/icons-material/Feedback";
+import { siteConfig } from "@/lib/site";
 
 export default function SiteFooter() {
   return (
@@ -28,6 +30,17 @@ export default function SiteFooter() {
             Mishra
           </Typography>
           <Stack direction="row" spacing={2}>
+            <Link
+              href={siteConfig.feedbackFormUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              color="text.secondary"
+              underline="hover"
+              sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
+            >
+              <FeedbackIcon fontSize="small" />
+              <Typography variant="body2">Feedback</Typography>
+            </Link>
             <Link
               href="https://github.com/harshmishra061"
               target="_blank"

@@ -16,6 +16,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import ImageIcon from "@mui/icons-material/Image";
 import UploadDropzone from "@/components/UploadDropzone";
+import FaqSection from "@/components/FaqSection";
 import { downloadBlob, loadImageDataUrl, loadImageElement } from "@/lib/canvas";
 
 const A4_WIDTH_MM = 210;
@@ -25,6 +26,39 @@ const BASE_PX_PER_MM = 96 / 25.4;
 // shrinks further to fit the available width instead of overflowing.
 const MAX_DISPLAY_SCALE = 0.55;
 const EXPORT_DPI = 300;
+
+const FAQ_ITEMS = [
+  {
+    question: "Can I put the front and back of my ID or documents on one page?",
+    answer:
+      "Yes — that's exactly what this is for. Add the front and back images (or any number of documents — certificates, marksheets, ID cards) as separate items, arrange them on the sheet, and export as a single PDF or image instead of juggling several files or printouts.",
+  },
+  {
+    question: "Is this only for exam forms?",
+    answer:
+      "No — it works for any form or submission that needs multiple documents laid out on one page: job applications, visa forms, bank KYC, college admissions, or just printing several photos/documents together.",
+  },
+  {
+    question: "What paper size should I use for document uploads?",
+    answer:
+      "A4 (210×297mm) is the standard size accepted by almost every government form and most other applications, both for direct uploads and for printing and physically submitting documents.",
+  },
+  {
+    question: "How do I combine multiple documents into one file for a form?",
+    answer:
+      "Add each photo, signature, or scanned page as a separate item on the sheet, arrange them so nothing overlaps, then export as a single PDF or image — no separate PDF-merging tool needed.",
+  },
+  {
+    question: "Can I export as an image instead of a PDF?",
+    answer:
+      "Yes — use \"Export Image\" for a single high-resolution PNG of the whole sheet, or \"Export PDF\" if the portal specifically asks for a PDF file.",
+  },
+  {
+    question: "Will my documents look blurry when printed?",
+    answer:
+      "Export renders the sheet at 300 DPI, which is standard print quality. If a specific photo still looks soft, the original source image was likely low resolution for the size you placed it at — try shrinking that item or using a higher-resolution source photo.",
+  },
+];
 
 interface DocItem {
   id: string;
@@ -180,8 +214,9 @@ export default function A4LayoutPage() {
           A4 Sheet Layout
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={{ mb: 4, maxWidth: 640 }}>
-          Add your photos, signature, and scanned documents, drag them onto
-          the sheet, then export as a PDF or image.
+          Add your photos, signature, ID front/back, and scanned documents,
+          drag them onto the sheet, then export as a PDF or image — for any
+          form or printout that needs multiple documents on one page.
         </Typography>
 
         <Grid container spacing={3}>
@@ -337,6 +372,8 @@ export default function A4LayoutPage() {
             </Stack>
           </Grid>
         </Grid>
+
+        <FaqSection items={FAQ_ITEMS} />
       </Container>
     </Box>
   );

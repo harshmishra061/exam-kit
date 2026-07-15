@@ -13,6 +13,40 @@ import BorderColorIcon from "@mui/icons-material/BorderColor";
 import GridViewIcon from "@mui/icons-material/GridView";
 import type { SvgIconComponent } from "@mui/icons-material";
 import { siteConfig } from "@/lib/site";
+import FaqSection from "@/components/FaqSection";
+
+const FAQ_ITEMS = [
+  {
+    question: "What can I actually do with ExamKit?",
+    answer:
+      "Two things, both aimed at the fiddly parts of filling out any form: the Signature Maker turns a photo of your signature into a clean, white-background image ready to upload. The A4 Sheet Layout tool lets you arrange multiple documents — like the front and back of an ID card, or several certificates — onto a single A4 sheet, so you can export one file or print one page instead of juggling several.",
+  },
+  {
+    question: "Is ExamKit only for exam forms?",
+    answer:
+      "No — despite the name, both tools work for any form that asks for a signature photo or scanned/printed documents: government and exam applications, job applications, visa forms, bank KYC, college admissions, and more.",
+  },
+  {
+    question: "Can I put the front and back of my ID or documents on one page?",
+    answer:
+      "Yes — that's exactly what the A4 Sheet Layout tool is for. Add the front and back images (or any number of documents), drag them into place on the sheet, and export as a single PDF or image. It's also handy for printing everything as one physical page instead of separate printouts.",
+  },
+  {
+    question: "Is ExamKit really free?",
+    answer:
+      "Yes. Every tool is free to use, with no account, sign-up, or watermark.",
+  },
+  {
+    question: "Do you upload or store my photos and documents?",
+    answer:
+      "No. Every tool runs entirely in your browser using the Canvas API — your signature photo, ID scans, and documents never leave your device or touch a server. Closing the tab clears everything.",
+  },
+  {
+    question: "Do I need to install anything?",
+    answer:
+      "No installation needed — ExamKit works directly in your mobile or desktop browser.",
+  },
+];
 
 const TOOLS: {
   href: string;
@@ -101,6 +135,22 @@ export default function Home() {
             );
           })}
         </Grid>
+
+        <Box sx={{ mt: 8, maxWidth: 640 }}>
+          <Typography variant="h5" sx={{ fontWeight: 600, mb: 1.5 }}>
+            Why ExamKit exists
+          </Typography>
+          <Typography color="text.secondary">
+            Filling out any form — a government exam application, a job
+            application, a visa form — is rarely just filling out a form. It's
+            fighting with signature photos that won't turn white, and
+            figuring out how to get the front and back of an ID, or several
+            documents, onto one sheet correctly. ExamKit is a small, free,
+            no-signup toolkit for exactly those fiddly steps.
+          </Typography>
+        </Box>
+
+        <FaqSection items={FAQ_ITEMS} />
       </Container>
     </Box>
   );
