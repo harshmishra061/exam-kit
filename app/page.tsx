@@ -1,65 +1,107 @@
-import Image from "next/image";
+"use client";
+
+import Link from "next/link";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
+import CardActionArea from "@mui/material/CardActionArea";
+import CardContent from "@mui/material/CardContent";
+import Box from "@mui/material/Box";
+import { alpha } from "@mui/material/styles";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+import GridViewIcon from "@mui/icons-material/GridView";
+import type { SvgIconComponent } from "@mui/icons-material";
+import { siteConfig } from "@/lib/site";
+
+const TOOLS: {
+  href: string;
+  title: string;
+  description: string;
+  icon: SvgIconComponent;
+}[] = [
+  {
+    href: "/signature-maker",
+    title: "Signature Maker",
+    description:
+      "Upload a photo of your signature and clean it up into crisp black ink on a plain white background.",
+    icon: BorderColorIcon,
+  },
+  {
+    href: "/a4-layout",
+    title: "A4 Sheet Layout",
+    description:
+      "Arrange photos, signatures, and scanned documents on an A4 sheet with proper margins before printing.",
+    icon: GridViewIcon,
+  },
+];
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <Box
+      component="main"
+      sx={{
+        flex: 1,
+        py: 10,
+        background: (theme) =>
+          `radial-gradient(circle at 15% 0%, ${alpha(theme.palette.primary.main, 0.08)}, transparent 45%), ${theme.palette.background.default}`,
+      }}
+    >
+      <Container maxWidth="md">
+        <Typography variant="h3" component="h1" gutterBottom>
+          {siteConfig.name}
+        </Typography>
+        <Typography variant="h6" color="text.secondary" sx={{ maxWidth: 560, mb: 6, fontWeight: 400 }}>
+          {siteConfig.description}
+        </Typography>
+
+        <Grid container spacing={3}>
+          {TOOLS.map((tool) => {
+            const Icon = tool.icon;
+            return (
+              <Grid key={tool.href} size={{ xs: 12, sm: 6 }}>
+                <Card
+                  variant="outlined"
+                  sx={{
+                    height: "100%",
+                    "&:hover": {
+                      boxShadow: "0 8px 24px rgba(30,27,46,0.08)",
+                      transform: "translateY(-2px)",
+                      borderColor: "primary.main",
+                    },
+                  }}
+                >
+                  <CardActionArea component={Link} href={tool.href} sx={{ height: "100%", p: 1 }}>
+                    <CardContent>
+                      <Box
+                        sx={{
+                          width: 48,
+                          height: 48,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          borderRadius: 2.5,
+                          bgcolor: (theme) => alpha(theme.palette.primary.main, 0.1),
+                          color: "primary.main",
+                          mb: 2,
+                        }}
+                      >
+                        <Icon />
+                      </Box>
+                      <Typography variant="h6" gutterBottom>
+                        {tool.title}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {tool.description}
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              </Grid>
+            );
+          })}
+        </Grid>
+      </Container>
+    </Box>
   );
 }
