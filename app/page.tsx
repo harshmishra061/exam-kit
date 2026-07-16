@@ -11,6 +11,8 @@ import Box from "@mui/material/Box";
 import { alpha } from "@mui/material/styles";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import GridViewIcon from "@mui/icons-material/GridView";
+import PhotoSizeSelectLargeIcon from "@mui/icons-material/PhotoSizeSelectLarge";
+import TextFieldsIcon from "@mui/icons-material/TextFields";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import type { SvgIconComponent } from "@mui/icons-material";
 import { siteConfig } from "@/lib/site";
@@ -20,12 +22,12 @@ const FAQ_ITEMS = [
   {
     question: "What can I actually do with ExamKit?",
     answer:
-      "Two things, both aimed at the fiddly parts of filling out any form: the Signature Maker turns a photo of your signature into a clean, white-background image ready to upload. The A4 Sheet Layout tool lets you arrange multiple documents — like the front and back of an ID card, or several certificates — onto a single A4 sheet, so you can export one file or print one page instead of juggling several.",
+      "Four things, all aimed at the fiddly parts of filling out any form: the Signature Maker turns a photo of your signature into a clean, white-background image ready to upload. The Image Resizer shrinks any photo to fit a file-size or pixel-dimension limit. Photo Caption lets you write a name, date, or label directly onto a photo. The A4 Sheet Layout tool lets you arrange multiple documents — like the front and back of an ID card, or several certificates — onto a single A4 sheet, so you can export one file or print one page instead of juggling several.",
   },
   {
     question: "Is ExamKit only for exam forms?",
     answer:
-      "No — despite the name, both tools work for any form that asks for a signature photo or scanned/printed documents: government and exam applications, job applications, visa forms, bank KYC, college admissions, and more.",
+      "No — despite the name, all four tools work for any form that asks for a signature photo, a correctly sized or labeled image, or scanned/printed documents: government and exam applications, job applications, visa forms, bank KYC, college admissions, and more.",
   },
   {
     question: "Can I put the front and back of my ID or documents on one page?",
@@ -69,6 +71,20 @@ const TOOLS: {
       "Arrange photos, signatures, and scanned documents on an A4 sheet with proper margins before printing.",
     icon: GridViewIcon,
   },
+  {
+    href: "/image-resizer",
+    title: "Image Resizer",
+    description:
+      "Shrink any photo to a target file size, with optional exact pixel dimensions, for any upload with a size limit.",
+    icon: PhotoSizeSelectLargeIcon,
+  },
+  {
+    href: "/photo-caption",
+    title: "Photo Caption",
+    description:
+      "Write your name, date, or any label directly at the bottom of a photo.",
+    icon: TextFieldsIcon,
+  },
 ];
 
 export default function Home() {
@@ -82,7 +98,7 @@ export default function Home() {
           `radial-gradient(circle at 15% 0%, ${alpha(theme.palette.primary.main, 0.08)}, transparent 45%), ${theme.palette.background.default}`,
       }}
     >
-      <Container maxWidth="md">
+      <Container maxWidth="lg">
         <Typography variant="h3" component="h1" gutterBottom>
           {siteConfig.name}
         </Typography>
@@ -94,7 +110,7 @@ export default function Home() {
           {TOOLS.map((tool) => {
             const Icon = tool.icon;
             return (
-              <Grid key={tool.href} size={{ xs: 12, sm: 6 }}>
+              <Grid key={tool.href} size={{ xs: 12, sm: 6, md: 3 }}>
                 <Card
                   variant="outlined"
                   sx={{

@@ -120,6 +120,135 @@ function clampByte(value: number): number {
   return Math.min(255, Math.max(0, value));
 }
 
+export interface CompressResult {
+  blob: Blob;
+  quality: number;
+  sizeKB: number;
+  hitTarget: boolean;
+}
+
+/**
+ * Binary-searches JPEG quality to land at or under targetKB.
+ * If even the lowest quality is still over target, returns that
+ * lowest-quality blob with hitTarget=false so the caller can warn the user.
+ */
+export async function compressToTargetKB(
+  canvas: HTMLCanvasElement,
+  targetKB: number,
+  mimeType: "image/jpeg" | "image/png" = "image/jpeg"
+): Promise<CompressResult> {
+  const toBlob = (quality: number) =>
+    new Promise<Blob>((resolve, reject) => {
+      canvas.toBlob(
+        (blob) => (blob ? resolve(blob) : reject(new Error("toBlob failed"))),
+        mimeType,
+        quality
+      );
+    });
+
+  if (mimeType === "image/png") {
+    const blob = await toBlob(1);
+    const sizeKB = blob.size / 1024;
+    return { blob, quality: 1, sizeKB, hitTarget: sizeKB <= targetKB };
+  }
+
+  let lo = 0.01;
+  let hi = 1;
+  let best: { blob: Blob; quality: number } | null = null;
+
+  for (let i = 0; i < 8; i++) {
+    const mid = (lo + hi) / 2;
+    const blob = await toBlob(mid);
+    const sizeKB = blob.size / 1024;
+
+    if (sizeKB <= targetKB) {
+      best = { blob, quality: mid };
+      lo = mid;
+    } else {
+      hi = mid;
+    }
+  }
+
+  if (best) {
+    return {
+      blob: best.blob,
+      quality: best.quality,
+      sizeKB: best.blob.size / 1024,
+      hitTarget: true,
+    };
+  }
+
+  const fallback = await toBlob(0.01);
+  return {
+    blob: fallback,
+    quality: 0.01,
+    sizeKB: fallback.size / 1024,
+    hitTarget: false,
+  };
+}
+
+/** Draws the image resized to the given pixel dimensions on a fresh canvas. */
+export function resizeToCanvas(
+  img: CanvasImageSource,
+  width: number,
+  height: number
+): HTMLCanvasElement {
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.max(1, Math.round(width));
+  canvas.height = Math.max(1, Math.round(height));
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("Canvas 2D context unavailable");
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = "high";
+  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  return canvas;
+}
+
+/**
+ * Draws the image at the given size, then overlays multiline text at the
+ * bottom — a solid white band behind black text keeps it legible regardless
+ * of what's in the photo, without extending the canvas.
+ */
+export function drawPhotoCaption(
+  img: CanvasImageSource,
+  width: number,
+  height: number,
+  text: string,
+  fontSizePx: number
+): HTMLCanvasElement {
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("Canvas 2D context unavailable");
+
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = "high";
+  ctx.drawImage(img, 0, 0, width, height);
+
+  const lines = text.split("\n");
+  if (lines.every((line) => line.trim() === "")) return canvas;
+
+  const lineHeight = fontSizePx * 1.3;
+  const paddingY = fontSizePx * 0.4;
+  const bandHeight = Math.min(height, lines.length * lineHeight + paddingY * 2);
+
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, height - bandHeight, width, bandHeight);
+
+  ctx.fillStyle = "#000000";
+  ctx.font = `600 ${fontSizePx}px system-ui, sans-serif`;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+
+  lines.forEach((line, i) => {
+    const y = height - bandHeight + paddingY + lineHeight * i + lineHeight / 2;
+    ctx.fillText(line, width / 2, y);
+  });
+
+  return canvas;
+}
+
 export function loadImageElement(src: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     const img = new Image();
